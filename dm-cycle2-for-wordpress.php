@@ -3,7 +3,7 @@
 Plugin Name: DM Cycle2 for WordPress
 Plugin URI: https://github.com/DesignMissoula/DM-Cycle2-for-WordPress
 Description: Used by Millions to make WordPress Better
-Version: 0.3.5
+Version: 0.5.0
 Author: Bradford Knowlton
 Author URI: http://bradknowlton.com/
 License: GPLv2
@@ -49,6 +49,15 @@ function register_cpt_slide() {
 		'menu_icon' => 'dashicons-format-gallery'
 	);
 	register_post_type( 'slide', $args );
+	
+	
+	if ( function_exists( 'add_image_size' ) ) { 
+		$width = esc_attr( get_option( 'dm-slide-width' ) );
+		$height = esc_attr( get_option( 'dm-slide-height' ) );
+		add_image_size( 'dm-slideshow-slide', $width, $height ); 
+		
+	}
+
 }
 
 function dm_enqueue_scripts() { // Our own unique function called dm_enqueue_scripts
@@ -82,6 +91,9 @@ if( isset($_GET['settings-updated']) ) { ?>
 </form>
 </div>
 <?php
+// global $_wp_additional_image_sizes;
+// var_dump($_wp_additional_image_sizes);
+
 }
 
 add_action( 'admin_init', 'slide_settings_init' );
@@ -106,12 +118,12 @@ function section_one_callback() {
 
 function field_one_callback() {
 	$setting_value = esc_attr( get_option( 'dm-slide-width' ) );
-	echo "<input class='small-text' type='text' id='field-one' name='dm-slide-width' value='$setting_value' />
+	echo "<input class='small-text' type='text' id='field-one' name='dm-slide-width' value='$setting_value' />px
 	<p class='description'>The width in pixels for the slideshow slides</p>";
 }
 function field_two_callback() {
 	$setting_value = esc_attr( get_option( 'dm-slide-height' ) );
-	echo "<input class='small-text' type='text' id='field-two' name='dm-slide-height' value='$setting_value' />
+	echo "<input class='small-text' type='text' id='field-two' name='dm-slide-height' value='$setting_value' />px
 	<p class='description'>The height in pixels for the slideshow slides</p>";
 }
 function field_three_callback() {
