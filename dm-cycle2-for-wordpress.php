@@ -3,7 +3,7 @@
 Plugin Name: DM Cycle2 for WordPress
 Plugin URI: https://github.com/DesignMissoula/DM-Cycle2-for-WordPress
 Description: Used by Millions to make WordPress Better
-Version: 0.2.3
+Version: 0.2.4
 Author: Bradford Knowlton
 Author URI: http://bradknowlton.com/
 License: GPLv2
@@ -57,6 +57,17 @@ function dw_enqueue_scripts() { // Our own unique function called dw_enqueue_scr
 
 }
 add_action( 'wp_enqueue_scripts', 'dw_enqueue_scripts' ); //Hooks our custom function into WP's wp_enqueue_scripts function
+
+add_action(‘admin_menu’ , ‘brdesign_enable_pages’);
+
+function brdesign_enable_pages() {
+	add_submenu_page(‘edit.php?post_type=slide’, ‘Slideshow Settings’, ‘Slideshow Settings’, ‘edit_posts’, basename(__FILE__), ‘slideshow_settings’);
+}
+
+function slideshow_settings(){
+	echo "hello world";
+}
+
 
 function dw_slideshow_func( $atts ){
 	return '
