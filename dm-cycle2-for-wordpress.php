@@ -3,7 +3,7 @@
 Plugin Name: DM Cycle2 for WordPress
 Plugin URI: https://github.com/DesignMissoula/DM-Cycle2-for-WordPress
 Description: Used by Millions to make WordPress Better
-Version: 0.2.1
+Version: 0.2.2
 Author: Bradford Knowlton
 Author URI: http://bradknowlton.com/
 License: GPLv2
@@ -83,7 +83,7 @@ function ss_github_plugin_updater_test_init() {
 
 		$config = array(
 			'slug' => plugin_basename( __FILE__ ),
-			'proper_folder_name' => 'selway-store-master',
+			'proper_folder_name' => 'DM-Cycle2-for-WordPress-master',
 			'api_url' => 'https://api.github.com/repos/DesignMissoula/DM-Cycle2-for-WordPress',
 			'raw_url' => 'https://raw.github.com/DesignMissoula/DM-Cycle2-for-WordPress/master',
 			'github_url' => 'https://github.com/DesignMissoula/DM-Cycle2-for-WordPress',
