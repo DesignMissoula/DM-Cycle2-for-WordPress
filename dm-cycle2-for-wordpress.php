@@ -3,7 +3,7 @@
 Plugin Name: DM Cycle2 for WordPress
 Plugin URI: https://github.com/DesignMissoula/DM-Cycle2-for-WordPress
 Description: Used by Millions to make WordPress Better
-Version: 0.3.4
+Version: 0.3.5
 Author: Bradford Knowlton
 Author URI: http://bradknowlton.com/
 License: GPLv2
@@ -69,48 +69,56 @@ function dm_slideshow_settings_page() {
 <div class="wrap">
 <?php screen_icon(); ?>
 <h2>Slideshow Settings</h2>
+<?php
+if( isset($_GET['settings-updated']) ) { ?>
+    <div id="message" class="updated">
+        <p><strong><?php _e('Settings saved.') ?></strong></p>
+    </div>
+<?php } ?>
 <form action="options.php" method="POST">
-<?php settings_fields( 'my-settings-group' ); ?>
-<?php do_settings_sections( 'my-plugin' ); ?>
+<?php settings_fields( 'slides-settings-group' ); ?>
+<?php do_settings_sections( 'slide-settings' ); ?>
 <?php submit_button(); ?>
 </form>
 </div>
 <?php
 }
 
-add_action( 'admin_init', 'my_admin_init' );
-function my_admin_init() {
+add_action( 'admin_init', 'slide_settings_init' );
+function slide_settings_init() {
 	// Settings
-	register_setting( 'my-settings-group', 'my-setting-one', 'intval' );
-	register_setting( 'my-settings-group', 'my-setting-two', 'intval' );
-	register_setting( 'my-settings-group', 'my-setting-three', 'intval' );
+	register_setting( 'slides-settings-group', 'dm-slide-width', 'intval' );
+	register_setting( 'slides-settings-group', 'dm-slide-height', 'intval' );
+	register_setting( 'slides-settings-group', 'dm-slide-count', 'intval' );
 
 	// Sections
-	add_settings_section( 'section-one', 'Section One', 'section_one_callback', 'my-plugin' );
+	add_settings_section( 'general-slide-settings', 'General Slide Settings', 'section_one_callback', 'slide-settings' );
 
 	// Fields
-	add_settings_field( 'field-one', 'Field One', 'field_one_callback', 'my-plugin', 'section-one' );
-	add_settings_field( 'field-two', 'Field Two', 'field_two_callback', 'my-plugin', 'section-one' );
-	add_settings_field( 'field-three', 'Field Three', 'field_two_callback', 'my-plugin', 'section-one' );
+	add_settings_field( 'field-one', 'Slide Width', 'field_one_callback', 'slide-settings', 'general-slide-settings' );
+	add_settings_field( 'field-two', 'Slide Height', 'field_two_callback', 'slide-settings', 'general-slide-settings' );
+	add_settings_field( 'field-three', 'Slide Count', 'field_three_callback', 'slide-settings', 'general-slide-settings' );
 }
 
 function section_one_callback() {
-	echo "Some help text goes here.";
+	echo "Sitewide settings for the slideshow plugin.";
 }
 
 function field_one_callback() {
-	$setting_value = esc_attr( get_option( 'my-setting-one' ) );
-	echo "<input class='regular-text' type='text' name='my-setting' value='$setting_value' />";
+	$setting_value = esc_attr( get_option( 'dm-slide-width' ) );
+	echo "<input class='small-text' type='text' id='field-one' name='dm-slide-width' value='$setting_value' />
+	<p class='description'>The width in pixels for the slideshow slides</p>";
 }
 function field_two_callback() {
-	$setting_value = esc_attr( get_option( 'my-setting-two' ) );
-	echo "<input class='regular-text' type='text' name='my-setting' value='$setting_value' />";
+	$setting_value = esc_attr( get_option( 'dm-slide-height' ) );
+	echo "<input class='small-text' type='text' id='field-two' name='dm-slide-height' value='$setting_value' />
+	<p class='description'>The height in pixels for the slideshow slides</p>";
 }
 function field_three_callback() {
-	$setting_value = esc_attr( get_option( 'my-setting-three' ) );
-	echo "<input class='regular-text' type='text' name='my-setting' value='$setting_value' />";
+	$setting_value = esc_attr( get_option( 'dm-slide-count' ) );
+	echo "<input class='small-text' type='text' id='field-three' name='dm-slide-count' value='$setting_value' />
+	<p class='description'>The number of slides to be shown in the slideshow</p>";
 }
-
 
 
 function dm_slideshow_func( $atts ){
