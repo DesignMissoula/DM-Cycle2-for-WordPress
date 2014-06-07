@@ -9,6 +9,11 @@ Author URI: http://bradknowlton.com/
 License: GPLv2
 */
 
+define( 'WP_GITHUB_FORCE_UPDATE', true );
+
+if(!class_exists('WP_GitHub_Updater')){
+    include_once plugin_dir_path( __FILE__ ) . 'includes/github-updater.php';
+}
 
 function dw_enqueue_scripts() { // Our own unique function called dw_enqueue_scripts
     wp_register_script( 'cycl2-js', plugins_url( 'js/jquery.cycle2.min.js', __FILE__ ), array('jquery'),'',true  ); 
