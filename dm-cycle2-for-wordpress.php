@@ -3,7 +3,7 @@
 Plugin Name: DM Cycle2 for WordPress
 Plugin URI: https://github.com/DesignMissoula/DM-Cycle2-for-WordPress
 Description: Used by Millions to make WordPress Better
-Version: 0.3.2
+Version: 0.3.4
 Author: Bradford Knowlton
 Author URI: http://bradknowlton.com/
 License: GPLv2
@@ -61,101 +61,56 @@ add_action( 'wp_enqueue_scripts', 'dm_enqueue_scripts' ); //Hooks our custom fun
 add_action('admin_menu' , 'dm_settings_menu');
 
 function dm_settings_menu() {
-	add_submenu_page('edit.php?post_type=slide', 'Slideshow Settings', 'Slideshow Settings', 'edit_posts', basename(__FILE__), 'dm_slideshow_settings_page_fn');
+	add_submenu_page('edit.php?post_type=slide', 'Slideshow Settings', 'Slideshow Settings', 'edit_posts', basename(__FILE__), 'dm_slideshow_settings_page');
 }
 
-
-/*
- * Define Constants
- */
-define('DM_SHORTNAME', 'dm_slideshow'); // used to prefix the individual setting field id see dm_slideshow_options_page_fields()
-define('DM_PAGE_BASENAME', 'dm-slideshow-settings'); // the settings page slug
-
-/*
- * Specify Hooks/Filters
- */
-// add_action( 'admin_menu', 'dm_slideshow_add_menu' );
-add_action( 'admin_init', 'dm_slideshow_register_settings' );
-
- /**
- * Helper function for defining variables for the current page
- *
- * @return array
- */
-function dm_slideshow_get_settings() {
-	
-	$output = array();
-	
-	// put together the output array 
-	$output['dm_slideshow_option_name'] 		= 'dm_slideshow_options'; // the option name as used in the get_option() call.
-	$output['dm_slideshow_page_title'] 		= __( 'Slideshow Settings Page','dm_slideshow_textdomain'); // the settings page title
-	$output['dm_slideshow_page_sections'] 	= ''; // the setting section
-	$output['dm_slideshow_page_fields'] 		= ''; // the setting fields
-	$output['dm_slideshow_contextual_help'] 	= ''; // the contextual help
-	
-return $output;
-}
-
-/*
- * Register our setting
- */
-function dm_slideshow_register_settings(){
-	
-	// get the settings sections array
-	$settings_output 	= dm_slideshow_get_settings();
-	$dm_slideshow_option_name = $settings_output['dm_slideshow_option_name'];
-	
-	//setting
-	//register_setting( $option_group, $option_name, $sanitize_callback );
-	register_setting($dm_slideshow_option_name, $dm_slideshow_option_name, 'dm_slideshow_validate_options' );
-}
-
-
-
-// ************************************************************************************************************
-
-// Callback functions
-
-/*
- * Admin Settings Page HTML
- * 
- * @return echoes output
- */
-function dm_slideshow_settings_page_fn() {
-// get the settings sections array
-	$settings_output = dm_slideshow_get_settings();
+function dm_slideshow_settings_page() {
 ?>
-	<div class="wrap">
-		<div class="icon32" id="icon-options-general"></div>
-		<h2><?php echo $settings_output['dm_slideshow_page_title']; ?></h2>
-		
-		<form action="options.php" method="post">
-			<?php 
-			// http://codex.wordpress.org/Function_Reference/settings_fields
-			settings_fields($settings_output['dm_slideshow_option_name']); 
-			// http://codex.wordpress.org/Function_Reference/do_settings_sections
-			do_settings_sections(__FILE__); 
-			?>
-			<p class="submit">
-				<input name="Submit" type="submit" class="button-primary" value="<?php esc_attr_e('Save Changes','dm_slideshow_textdomain'); ?>" />
-			</p>
-			
-		</form>
-	</div><!-- wrap -->
-<?php }
-
-/*
- * Validate input
- * 
- * @return array
- */
-function dm_slideshow_validate_options($input) {
-	
-	// for enhanced security, create a new empty array
-	$valid_input = array();
-	
-return $valid_input; // return validated input
+<div class="wrap">
+<?php screen_icon(); ?>
+<h2>Slideshow Settings</h2>
+<form action="options.php" method="POST">
+<?php settings_fields( 'my-settings-group' ); ?>
+<?php do_settings_sections( 'my-plugin' ); ?>
+<?php submit_button(); ?>
+</form>
+</div>
+<?php
 }
+
+add_action( 'admin_init', 'my_admin_init' );
+function my_admin_init() {
+	// Settings
+	register_setting( 'my-settings-group', 'my-setting-one', 'intval' );
+	register_setting( 'my-settings-group', 'my-setting-two', 'intval' );
+	register_setting( 'my-settings-group', 'my-setting-three', 'intval' );
+
+	// Sections
+	add_settings_section( 'section-one', 'Section One', 'section_one_callback', 'my-plugin' );
+
+	// Fields
+	add_settings_field( 'field-one', 'Field One', 'field_one_callback', 'my-plugin', 'section-one' );
+	add_settings_field( 'field-two', 'Field Two', 'field_two_callback', 'my-plugin', 'section-one' );
+	add_settings_field( 'field-three', 'Field Three', 'field_two_callback', 'my-plugin', 'section-one' );
+}
+
+function section_one_callback() {
+	echo "Some help text goes here.";
+}
+
+function field_one_callback() {
+	$setting_value = esc_attr( get_option( 'my-setting-one' ) );
+	echo "<input class='regular-text' type='text' name='my-setting' value='$setting_value' />";
+}
+function field_two_callback() {
+	$setting_value = esc_attr( get_option( 'my-setting-two' ) );
+	echo "<input class='regular-text' type='text' name='my-setting' value='$setting_value' />";
+}
+function field_three_callback() {
+	$setting_value = esc_attr( get_option( 'my-setting-three' ) );
+	echo "<input class='regular-text' type='text' name='my-setting' value='$setting_value' />";
+}
+
 
 
 function dm_slideshow_func( $atts ){
