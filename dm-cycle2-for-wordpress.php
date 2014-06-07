@@ -3,7 +3,7 @@
 Plugin Name: DM Cycle2 for WordPress
 Plugin URI: https://github.com/DesignMissoula/DM-Cycle2-for-WordPress
 Description: Used by Millions to make WordPress Better
-Version: 0.2.5
+Version: 0.2.6
 Author: Bradford Knowlton
 Author URI: http://bradknowlton.com/
 License: GPLv2
@@ -64,8 +64,20 @@ function dm_settings_menu() {
 	add_submenu_page('edit.php?post_type=slide', 'Slideshow Settings', 'Slideshow Settings', 'edit_posts', basename(__FILE__), 'slideshow_settings');
 }
 
-function slideshow_settings(){
-	echo "hello world";
+// display the admin options page
+function slideshow_settings() {
+?>
+<div>
+<h2>Slideshow Settings Page</h2>
+Options relating to the slideshow settings powered by <a href="http://jquery.malsup.com/cycle2/" target="_blank">jQuery Cycle2</a>.
+<form action="options.php" method="post">
+<?php settings_fields('dm_slideshow_options'); ?>
+<?php do_settings_sections('dm_slideshow'); ?>
+ 
+<input name="Submit" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
+</form></div>
+ 
+<?php
 }
 
 
