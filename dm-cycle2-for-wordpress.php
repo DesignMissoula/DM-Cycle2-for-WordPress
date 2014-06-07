@@ -88,7 +88,7 @@ function dm_slideshow_get_settings() {
 	
 	// put together the output array 
 	$output['dm_slideshow_option_name'] 		= 'dm_slideshow_options'; // the option name as used in the get_option() call.
-	$output['dm_slideshow_page_title'] 		= __( 'dm_slideshow Settings Page','dm_slideshow_textdomain'); // the settings page title
+	$output['dm_slideshow_page_title'] 		= __( 'Slideshow Settings Page','dm_slideshow_textdomain'); // the settings page title
 	$output['dm_slideshow_page_sections'] 	= ''; // the setting section
 	$output['dm_slideshow_page_fields'] 		= ''; // the setting fields
 	$output['dm_slideshow_contextual_help'] 	= ''; // the contextual help
@@ -130,6 +130,12 @@ function dm_slideshow_settings_page_fn() {
 		<h2><?php echo $settings_output['dm_slideshow_page_title']; ?></h2>
 		
 		<form action="options.php" method="post">
+			<?php 
+			// http://codex.wordpress.org/Function_Reference/settings_fields
+			settings_fields($settings_output['dm_slideshow_option_name']); 
+			// http://codex.wordpress.org/Function_Reference/do_settings_sections
+			do_settings_sections(__FILE__); 
+			?>
 			<p class="submit">
 				<input name="Submit" type="submit" class="button-primary" value="<?php esc_attr_e('Save Changes','dm_slideshow_textdomain'); ?>" />
 			</p>
