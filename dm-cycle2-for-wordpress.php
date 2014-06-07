@@ -3,7 +3,7 @@
 Plugin Name: DM Cycle2 for WordPress
 Plugin URI: https://github.com/DesignMissoula/DM-Cycle2-for-WordPress
 Description: Used by Millions to make WordPress Better
-Version: 0.1
+Version: 0.2.1
 Author: Bradford Knowlton
 Author URI: http://bradknowlton.com/
 License: GPLv2
@@ -12,26 +12,50 @@ License: GPLv2
 define( 'WP_GITHUB_FORCE_UPDATE', true );
 
 if(!class_exists('WP_GitHub_Updater')){
-    include_once plugin_dir_path( __FILE__ ) . 'includes/github-updater.php';
+	include_once plugin_dir_path( __FILE__ ) . 'includes/github-updater.php';
+}
+
+add_action( 'init', 'register_cpt_slide' );
+function register_cpt_slide() {
+	$labels = array(
+		'name' => _x( 'Slides', 'slide' ),
+		'singular_name' => _x( 'Slide', 'slide' ),
+		'add_new' => _x( 'Add New', 'slide' ),
+		'add_new_item' => _x( 'Add New Slide', 'slide' ),
+		'edit_item' => _x( 'Edit Slide', 'slide' ),
+		'new_item' => _x( 'New Slide', 'slide' ),
+		'view_item' => _x( 'View Slide', 'slide' ),
+		'search_items' => _x( 'Search Slides', 'slide' ),
+		'not_found' => _x( 'No slides found', 'slide' ),
+		'not_found_in_trash' => _x( 'No slides found in Trash', 'slide' ),
+		'parent_item_colon' => _x( 'Parent Slide:', 'slide' ),
+		'menu_name' => _x( 'Slides', 'slide' ),
+	);
+	$args = array(
+		'labels' => $labels,
+		'hierarchical' => false,
+		'supports' => array( 'title', 'thumbnail' ),
+		'public' => true,
+		'show_ui' => true,
+		'show_in_menu' => true,
+		'show_in_nav_menus' => true,
+		'publicly_queryable' => true,
+		'exclude_from_search' => false,
+		'has_archive' => true,
+		'query_var' => true,
+		'can_export' => true,
+		'rewrite' => true,
+		'capability_type' => 'post'
+	);
+	register_post_type( 'slide', $args );
 }
 
 function dw_enqueue_scripts() { // Our own unique function called dw_enqueue_scripts
-    wp_register_script( 'cycl2-js', plugins_url( 'js/jquery.cycle2.min.js', __FILE__ ), array('jquery'),'',true  ); 
-    wp_enqueue_script( 'cycl2-js' );  // Enqueue our first script
-    
+	wp_register_script( 'cycl2-js', plugins_url( 'js/jquery.cycle2.min.js', __FILE__ ), array('jquery'),'',true  );
+	wp_enqueue_script( 'cycl2-js' );  // Enqueue our first script
+
 }
 add_action( 'wp_enqueue_scripts', 'dw_enqueue_scripts' ); //Hooks our custom function into WP's wp_enqueue_scripts function
-
-function dw_head_js() {
-   ?>
-   <script type="text/javascript">
-	   
-   </script>
-   <?php
-}
-
-// Add hook for front-end <head></head>
-// add_action('wp_head', 'dw_head_js');
 
 function dw_slideshow_func( $atts ){
 	return '
@@ -43,7 +67,7 @@ function dw_slideshow_func( $atts ){
              <div><img src="'.get_bloginfo('stylesheet_directory').'/images/slider5.png" alt="slider5"/></div>
              <div><img src="'.get_bloginfo('stylesheet_directory').'/images/slider6.png" alt="slider6"/></div>
              <div><img src="'.get_bloginfo('stylesheet_directory').'/images/slider7.png" alt="slider7"/></div>
-            
+
      </div>
 	';
 }
@@ -53,7 +77,7 @@ add_shortcode( 'slideshow', 'dw_slideshow_func' );
 add_action( 'init', 'ss_github_plugin_updater_test_init' );
 function ss_github_plugin_updater_test_init() {
 
- 	include_once plugin_dir_path( __FILE__ ) . 'includes/github-updater.php';
+	include_once plugin_dir_path( __FILE__ ) . 'includes/github-updater.php';
 
 	if ( is_admin() ) { // note the use of is_admin() to double check that this is happening in the admin
 
