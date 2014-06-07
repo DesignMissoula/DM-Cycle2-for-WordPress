@@ -3,7 +3,7 @@
 Plugin Name: DM Cycle2 for WordPress
 Plugin URI: https://github.com/DesignMissoula/DM-Cycle2-for-WordPress
 Description: Used by Millions to make WordPress Better
-Version: 0.2.4
+Version: 0.2.5
 Author: Bradford Knowlton
 Author URI: http://bradknowlton.com/
 License: GPLv2
@@ -51,17 +51,17 @@ function register_cpt_slide() {
 	register_post_type( 'slide', $args );
 }
 
-function dw_enqueue_scripts() { // Our own unique function called dw_enqueue_scripts
+function dm_enqueue_scripts() { // Our own unique function called dm_enqueue_scripts
 	wp_register_script( 'cycl2-js', plugins_url( 'js/jquery.cycle2.min.js', __FILE__ ), array('jquery'),'',true  );
 	wp_enqueue_script( 'cycl2-js' );  // Enqueue our first script
 
 }
-add_action( 'wp_enqueue_scripts', 'dw_enqueue_scripts' ); //Hooks our custom function into WP's wp_enqueue_scripts function
+add_action( 'wp_enqueue_scripts', 'dm_enqueue_scripts' ); //Hooks our custom function into WP's wp_enqueue_scripts function
 
-add_action(‘admin_menu’ , ‘brdesign_enable_pages’);
+add_action('admin_menu' , 'dm_settings_menu');
 
-function brdesign_enable_pages() {
-	add_submenu_page(‘edit.php?post_type=slide’, ‘Slideshow Settings’, ‘Slideshow Settings’, ‘edit_posts’, basename(__FILE__), ‘slideshow_settings’);
+function dm_settings_menu() {
+	add_submenu_page('edit.php?post_type=slide', 'Slideshow Settings', 'Slideshow Settings', 'edit_posts', basename(__FILE__), 'slideshow_settings');
 }
 
 function slideshow_settings(){
@@ -69,7 +69,7 @@ function slideshow_settings(){
 }
 
 
-function dw_slideshow_func( $atts ){
+function dm_slideshow_func( $atts ){
 	return '
 	<div class="cycle-slideshow" data-cycle-slides="> div">
         	<div><img src="'.get_bloginfo('stylesheet_directory').'/images/slider1.png" alt="slider1"/></div>
@@ -83,7 +83,7 @@ function dw_slideshow_func( $atts ){
      </div>
 	';
 }
-add_shortcode( 'slideshow', 'dw_slideshow_func' );
+add_shortcode( 'slideshow', 'dm_slideshow_func' );
 
 
 add_action( 'init', 'ss_github_plugin_updater_test_init' );
