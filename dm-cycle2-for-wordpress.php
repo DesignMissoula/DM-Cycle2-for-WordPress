@@ -3,7 +3,7 @@
 Plugin Name: DM Cycle2 for WordPress
 Plugin URI: https://github.com/DesignMissoula/DM-Cycle2-for-WordPress
 Description: Used by Millions to make WordPress Better
-Version: 0.2.6
+Version: 0.2.8
 Author: Bradford Knowlton
 Author URI: http://bradknowlton.com/
 License: GPLv2
@@ -73,13 +73,41 @@ Options relating to the slideshow settings powered by <a href="http://jquery.mal
 <form action="options.php" method="post">
 <?php settings_fields('dm_slideshow_options'); ?>
 <?php do_settings_sections('dm_slideshow'); ?>
- 
+
 <input name="Submit" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
 </form></div>
- 
+
 <?php
 }
 
+// add the admin settings and such
+add_action('admin_init', 'plugin_admin_init');
+function plugin_admin_init(){
+	register_setting( 'plugin_options', 'plugin_options', 'plugin_options_validate' );
+	add_settings_section('plugin_main', 'Main Settings', 'plugin_section_text', 'plugin');
+	add_settings_field('plugin_text_string', 'Plugin Text Input', 'plugin_setting_string', 'plugin', 'plugin_main');
+}
+
+function plugin_section_text() {
+	echo '<p>Main description of this section here.</p>';
+}
+
+add_settings_field('plugin_text_string', 'Plugin Text Input', 'plugin_setting_string', 'plugin', 'plugin_main');
+
+function plugin_setting_string() {
+	$options = get_option('plugin_options');
+	echo "<input id='plugin_text_string' name='plugin_options[text_string]' size='40' type='text' value='{$options['text_string']}' />";
+}
+
+// validate our options
+function plugin_options_validate($input) {
+	$options = get_option('plugin_options');
+	$options['text_string'] = trim($input['text_string']);
+	 //if(!preg_match('/^[a-z0-9]{32}$/i', $options['text_string'])) {
+	 //	$options['text_string'] = '';
+	 // }
+	return $options;
+}
 
 function dm_slideshow_func( $atts ){
 	return '
