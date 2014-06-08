@@ -35,7 +35,7 @@ function register_cpt_slide() {
 		'labels' => $labels,
 		'hierarchical' => false,
 		'supports' => array( 'title', 'thumbnail' ),
-		'public' => true,
+		// 'public' => true,
 		'show_ui' => true,
 		'show_in_menu' => true,
 		'show_in_nav_menus' => true,
