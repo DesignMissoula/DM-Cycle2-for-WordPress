@@ -54,7 +54,7 @@ function register_cpt_slide() {
 	if ( function_exists( 'add_image_size' ) ) { 
 		$width = esc_attr( get_option( 'dm-slide-width' ) );
 		$height = esc_attr( get_option( 'dm-slide-height' ) );
-		add_image_size( 'dm-slideshow-slide', $width, $height ); 
+		add_image_size( 'dm-slideshow-slide', $width, $height, true ); 
 		
 	}
 
