@@ -3,7 +3,7 @@
 Plugin Name: DM Cycle2 for WordPress
 Plugin URI: https://github.com/DesignMissoula/DM-Cycle2-for-WordPress
 Description: Used by Millions to make WordPress Better
-Version: 0.5.6
+Version: 0.5.7
 Author: Bradford Knowlton
 Author URI: http://bradknowlton.com/
 License: GPLv2
@@ -142,7 +142,7 @@ function dm_slideshow_func( $atts ){
 		
 		// The Loop
 		while ( have_posts() ) : the_post();
-		    $return .= '<div>'.get_the_post_thumbnail(get_the_id(), 'dm-slideshow-slide').'</div>';
+		    $return .= '<div class="slide">'.get_the_post_thumbnail(get_the_id(), 'dm-slideshow-slide').'</div>';
 		endwhile;
 		
 		//Reset Query
