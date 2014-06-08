@@ -134,18 +134,30 @@ function field_three_callback() {
 
 
 function dm_slideshow_func( $atts ){
-	return '
-	<div class="cycle-slideshow" data-cycle-slides="> div">
-        	<div><img src="'.get_bloginfo('stylesheet_directory').'/images/slider1.png" alt="slider1"/></div>
-             <div><img src="'.get_bloginfo('stylesheet_directory').'/images/slider2.png" alt="slider2"/></div>
+	$return = "";
+	$return .= '<div class="cycle-slideshow" data-cycle-slides="> div">';
+        	
+        $slide_count = esc_attr( get_option( 'dm-slide-count' ) );	
+        $args = array('post_type'=>'slide', 'post_status'=>'publish', 'posts_per_page'=>$slide_count,);	
+
+        // The Query
+		query_posts( $args );
+		
+		// The Loop
+		while ( have_posts() ) : the_post();
+		    $return .= '<div>'.get_the_post_thumbnail(get_the_id(), 'dm-slideshow-slide').'</div>';
+		endwhile;
+        	
+            
+            /*
+ <div><img src="'.get_bloginfo('stylesheet_directory').'/images/slider2.png" alt="slider2"/></div>
              <div><img src="'.get_bloginfo('stylesheet_directory').'/images/slider3.png" alt="slider3"/></div>
              <div><img src="'.get_bloginfo('stylesheet_directory').'/images/slider4.png" alt="slider4"/></div>
              <div><img src="'.get_bloginfo('stylesheet_directory').'/images/slider5.png" alt="slider5"/></div>
              <div><img src="'.get_bloginfo('stylesheet_directory').'/images/slider6.png" alt="slider6"/></div>
              <div><img src="'.get_bloginfo('stylesheet_directory').'/images/slider7.png" alt="slider7"/></div>
-
-     </div>
-	';
+*/
+    $return .= '</div>';
 }
 add_shortcode( 'slideshow', 'dm_slideshow_func' );
 
