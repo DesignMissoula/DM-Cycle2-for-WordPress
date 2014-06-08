@@ -3,7 +3,7 @@
 Plugin Name: DM Cycle2 for WordPress
 Plugin URI: https://github.com/DesignMissoula/DM-Cycle2-for-WordPress
 Description: Used by Millions to make WordPress Better
-Version: 0.5.5
+Version: 0.5.6
 Author: Bradford Knowlton
 Author URI: http://bradknowlton.com/
 License: GPLv2
@@ -75,25 +75,22 @@ function dm_settings_menu() {
 
 function dm_slideshow_settings_page() {
 ?>
-<div class="wrap">
-<?php screen_icon(); ?>
-<h2>Slideshow Settings</h2>
+	<div class="wrap">
+	<?php screen_icon(); ?>
+	<h2>Slideshow Settings</h2>
+	<?php
+	if( isset($_GET['settings-updated']) ) { ?>
+	    <div id="message" class="updated">
+	        <p><strong><?php _e('Settings saved.') ?></strong></p>
+	    </div>
+	<?php } ?>
+	<form action="options.php" method="POST">
+	<?php settings_fields( 'slides-settings-group' ); ?>
+	<?php do_settings_sections( 'slide-settings' ); ?>
+	<?php submit_button(); ?>
+	</form>
+	</div>
 <?php
-if( isset($_GET['settings-updated']) ) { ?>
-    <div id="message" class="updated">
-        <p><strong><?php _e('Settings saved.') ?></strong></p>
-    </div>
-<?php } ?>
-<form action="options.php" method="POST">
-<?php settings_fields( 'slides-settings-group' ); ?>
-<?php do_settings_sections( 'slide-settings' ); ?>
-<?php submit_button(); ?>
-</form>
-</div>
-<?php
-// global $_wp_additional_image_sizes;
-// var_dump($_wp_additional_image_sizes);
-
 }
 
 add_action( 'admin_init', 'slide_settings_init' );
@@ -147,13 +144,20 @@ function dm_slideshow_func( $atts ){
 		while ( have_posts() ) : the_post();
 		    $return .= '<div>'.get_the_post_thumbnail(get_the_id(), 'dm-slideshow-slide').'</div>';
 		endwhile;
+		
+		//Reset Query
+		wp_reset_query();
 
     $return .= '</div>';
+    
+    return $return;
 }
+
 add_shortcode( 'slideshow', 'dm_slideshow_func' );
 
 
 add_action( 'init', 'ss_github_plugin_updater_test_init' );
+
 function ss_github_plugin_updater_test_init() {
 
 	include_once plugin_dir_path( __FILE__ ) . 'includes/github-updater.php';
