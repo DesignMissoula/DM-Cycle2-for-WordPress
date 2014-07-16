@@ -3,7 +3,7 @@
 Plugin Name: DM Cycle2 for WordPress
 Plugin URI: https://github.com/DesignMissoula/DM-Cycle2-for-WordPress
 Description: Used by Millions to make WordPress Better
-Version: 1.5.8
+Version: 1.5.9
 Author: Bradford Knowlton
 Author URI: http://bradknowlton.com/
 License: GPLv2
